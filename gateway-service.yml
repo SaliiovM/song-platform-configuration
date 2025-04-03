@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: resourceService
+          uri: lb://resource-service
+          predicates:
+            - Path=/resources/**
+        - id: songService
+          uri: lb://song-service
+          predicates:
+            - Path=/songs/**
+      filters:
+        - name: ErrorHandlingFilter
+
+server:
+  port: 8080
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-svc:8761/eureka
+  instance:
+    preferIpAddress: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, info
+  endpoint:
+    health:
+      show-details: always
