@@ -24,12 +24,24 @@ eureka:
       defaultZone: http://eureka-svc:8761/eureka
   instance:
     preferIpAddress: true
+  metadataMap:
+    "prometheus.scrape": "true"
+    "prometheus.path": "/actuator/prometheus"
+    "prometheus.port": 8080
 
 management:
   endpoints:
     web:
       exposure:
-        include: refresh, health, info
+        include: health, info, prometheus
   endpoint:
     health:
       show-details: always
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
